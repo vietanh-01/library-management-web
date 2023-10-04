@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Home Page</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <a class="navbar-brand" href="/user">Home</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/user-profile">
+         <i>Well come</i> <i style="font-weight: bold; color:white" th:text="${user.username}" class="fa fa-user">!</i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a style="font-weight: bold; color:white" class="nav-link" href="/logout">Log out</a>
+      </li>
+      <li class="nav-item">
+        <a style="font-weight: bold; color:white" class="nav-link" href="/orders">Orderd Books</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+
+<div class="container">
+  <h1>Book List</h1>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Cover</th>
+      <th>Name</th>
+      <th>Author</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Sử dụng thymeleaf để lặp qua danh sách sách -->
+    <tr th:each="book : ${books}">
+      <td><img th:src="@{'/static/uploads/' + ${book.cover}}" alt="Bìa sách" width="70"></td>
+      <td th:text="${book.name}"></td>
+      <td th:text="${book.author}"></td>
+      <td><a th:href="@{/user/view/{id}(id=${book.id})}" class="btn btn-success">View</a></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

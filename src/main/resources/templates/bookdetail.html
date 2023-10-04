@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Book Detail</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .image-preview {
+      max-width: 200px;
+      max-height: 200px;
+    }
+  </style>
+</head>
+<body>
+<div class="container mt-5">
+  <h2 class="mb-4">Book Detail & New Order</h2>
+  <form id="bookForm" th:object="${book}" th:action="@{/order/new}" method="POST" >
+    <div class="row">
+      <!-- Right column -->
+      <div class="col-md-6">
+        <div class="form-group row">
+          <label for="id" class="col-sm-2 col-form-label">ID:</label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" id="id" name="id" th:value="${book.id}" readonly>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="name" class="col-sm-2 col-form-label">Name:</label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" id="name" name="name" th:value="${book.name}" readonly>
+          </div>
+          <label for="author" class="col-sm-2 col-form-label">Author:</label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" id="author" name="author" th:value="${book.author}" readonly>
+          </div>
+        </div>
+        <div class="form-group row">
+        <label for="description" class="col-sm-2 col-form-label">Description:</label>
+        <div class="col-sm-10">
+          <textarea class="form-control" id="description" name="description" rows="6" th:field="${book.description}" readonly></textarea>
+        </div>
+      </div>
+        <div class="form-group row">
+          <label for="public_day" class="col-sm-2 col-form-label">Publish Date:</label>
+          <div class="col-sm-4">
+            <input type="date" class="form-control" id="public_day" name="public_day" th:value="${book.public_day}" readonly>
+          </div>
+          <label for="pages_number" class="col-sm-2 col-form-label">Number of Pages:</label>
+          <div class="col-sm-4">
+            <input type="number" class="form-control" id="pages_number" name="pages_number" th:value="${book.pages_number}" readonly>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="category" class="col-sm-2 col-form-label">Category:</label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" id="category" name="category" th:value="${book.category}" disabled>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="quantity" class="col-sm-2 col-form-label">Order Number:</label>
+          <div class="col-sm-4">
+            <input type="number" class="form-control" id="quantity" name="quantity">
+          </div>
+        </div>
+      </div>
+
+      <!-- Left column -->
+      <div class="col-md-6">
+        <label class="col-sm-2 col-form-label">Book Cover:</label>
+        <img th:src="@{'/static/uploads/' + ${book.cover}}" width="150px" height="200px">
+      </div>
+    </div>
+
+    <div class="row justify-content-center mt-4">
+      <button id="orderBtn" type="submit" class="btn btn-success mr-2">Order</button>
+      <a href="/user" class="btn btn-info">Return</a>
+    </div>
+  </form>
+
+  <!-- Rating and Comment section -->
+  <div class="container mt-5">
+    <h2 class="mb-4">Rate and Comment</h2>
+    <form id="ratingForm" th:action="@{/rate}" method="POST">
+      <input type="hidden" id="user_id" name="user_id" th:value="${user.id}"/>
+      <input type="hidden" id="username" name="username" th:value="${user.name}"/>
+      <input type="hidden" id="book_id" name="book_id" th:value="${book.id}"/>
+      <div class="form-group row">
+        <label for="userRating" class="col-sm-2 col-form-label">Rating:</label>
+        <div class="col-sm-2">
+          <select class="form-control" id="userRating" name="userRating">
+            <option value="1">1 star</option>
+            <option value="2">2 stars</option>
+            <option value="3">3 stars</option>
+            <option value="4">4 stars</option>
+            <option value="5">5 stars</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="userComment" class="col-sm-2 col-form-label">Comment:</label>
+        <div class="col-sm-10">
+          <textarea class="form-control" id="userComment" name="userComment" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="row justify-content-center mt-4">
+        <button type="submit" class="btn btn-success mr-2">Rate</button>
+      </div>
+    </form>
+
+    <div class="row mt-5">
+      <div class="col-md-12">
+        <h3>Comments</h3>
+        <table class="table">
+          <thead>
+          <tr>
+            <th>Username</th>
+            <th>Rating Star</th>
+            <th>Comment</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="rating : ${ratings}">
+            <!--/*@thymesVar id="username" type=""*/-->
+            <td th:text="${rating.username}"></td>
+            <td th:text="${rating.rating}"></td>
+            <td th:text="${rating.comment}"></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+</div>
+</body>
+</html>

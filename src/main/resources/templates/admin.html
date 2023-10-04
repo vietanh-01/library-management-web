@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book List</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <style>
+    .full-width-btn {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <a class="navbar-brand" href="/admin">Home</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a th:if="${loggedIn}" class="nav-link" href="/user-profile">
+         <i  th:if="${loggedIn}">Well come</i> <i style="font-weight: bold; color:white" th:text="${user.username}" class="fa fa-user"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a style="font-weight: bold; color:white" th:if="${loggedIn}" class="nav-link" href="/logout">Log out</a>
+        <a style="font-weight: bold; color:white" th:unless="${loggedIn}" class="nav-link" href="/login">Log in</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container mt-4">
+  <h1>Book List</h1>
+  <div class="row">
+    <div class="col-md-12">
+      <a class="btn btn-primary mb-3 full-width-btn" th:if="${loggedIn}" th:href="@{/admin/new}">New Book</a>
+    </div>
+  </div>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Author</th>
+      <th>Category</th>
+      <th>Public Day</th>
+      <th>Total Number of Pages</th>
+      <th>Number of Sold</th>
+      <th th:if="${loggedIn}"></th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Add more rows for other books -->
+    <tr th:each="book : ${books}">
+      <td th:text="${book.name}"></td>
+      <td th:text="${book.author}"></td>
+      <td th:text="${book.category}"></td>
+      <td th:text="${book.public_day}"></td>
+      <td th:text="${book.pages_number}"></td>
+      <td th:text="${book.sold}"></td>
+      <td th:if="${loggedIn}">
+        <a th:href="@{/admin/view/{id}(id=${book.id})}" class="btn btn-success">View</a>
+      </td>
+      <td th:if="${loggedIn}">
+        <form th:action="@{/admin/delete}" method="post" onsubmit="return confirm('Do you want to delete this book ?')">
+            <input type="hidden" id="id" name="id" th:value="${book.id}"/>
+          <input type="hidden" id="cover" name="cover" th:value="${book.cover}"/>
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

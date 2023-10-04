@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Orders</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    tr:hover {
+      background-color: #f5f5f5;
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <a class="navbar-brand" href="/user">Home</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/user-profile">
+          <i>Well come</i> <i style="font-weight: bold; color:white" th:text="${user.username}" class="fa fa-user">!</i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/logout">Log out</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/orders">Ordered Books</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container mt-5">
+  <h2>User Orders</h2>
+  <table class="table mt-4">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Book Name</th>
+      <th>Quantity</th>
+      <th>Actions</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Use Thymeleaf to iterate over orders and display the data -->
+    <tr th:each="order : ${orders}">
+      <td th:text="${order.id}"></td>
+      <td th:text="${order.book_name}"></td>
+      <td th:text="${order.quantity}"></td>
+      <td>
+        <div class="d-flex">
+          <a th:href="@{/user/view/{id}(id=${order.book_id})}" class="btn btn-success mr-2">View</a>
+          <form th:action="@{/order/cancel}" method="post" onsubmit="return confirm('Are you sure ?')">
+            <input type="hidden" id="id" name="id" th:value="${order.id}"/>
+            <button type="submit" class="btn btn-danger">Cancel</button>
+          </form>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
